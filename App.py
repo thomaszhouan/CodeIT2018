@@ -4,7 +4,7 @@ logger = logging.getLogger(__name__)
 
 @app.route('/', methods=['GET'])
 def default_route():
-    return "Team XYZ page";
+    return "Team XYZ page"
 
 if __name__ == "__main__":
     logFormatter = logging.Formatter("%(asctime)s [%(filename)s] [%(funcName)s] [%(lineno)d] [%(levelname)-5.5s]  %(message)s")
