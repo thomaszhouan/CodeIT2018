@@ -96,33 +96,48 @@ def single_runway(plane, ret):
 
 def multiple_runways(plane, runway, ret):
   new = sorted(plane, key=lambda k: (k["Time"], k["Id"]))
-  rw = []
+  rws = []
   output = []
   for r in runway:
     temp = {}
     temp['name'] = r
     temp["Time"] = -10
-    rw.append(temp.copy())
+    rws.append(temp.copy())
 
-  index = 0
+  # index = 0
+  # for p in new:
+  #   time = p["Time"]
+  #   temp = {}
+  #   temp["PlaneId"] = p["Id"]
+  #   if rw[index]["Time"] + ret <= time:
+  #     rw[index]["Time"] = time
+  #   else:
+  #     rw[index]["Time"] += ret   
+  #     time = rw[index]["Time"]
+
+  #   temp["Time"] = min_to_time(time)
+  #   temp["Runway"] = rw[index]["name"]
+  #   output.append(temp.copy())
+  #   if index == len(rw) - 1:
+  #     index = 0
+  #   else:
+  #     index += 1
+  #   continue
+  
   for p in new:
     time = p["Time"]
     temp = {}
     temp["PlaneId"] = p["Id"]
-    if rw[index]["Time"] + ret <= time:
-      rw[index]["Time"] = time
+    rw = min(rws, key = lambda k:k['Time'])
+    if rw["Time"] + ret <= time:
+      rw["Time"] = time
     else:
-      rw[index]["Time"] += ret   
-      time = rw[index]["Time"]
+      rw["Time"] += ret   
+      time = rw["Time"]
 
     temp["Time"] = min_to_time(time)
-    temp["Runway"] = rw[index]["name"]
+    temp["Runway"] = rw["name"]
     output.append(temp.copy())
-    if index == len(rw) - 1:
-      index = 0
-    else:
-      index += 1
-    continue
 
     # if this one is occupied, next one should be better
     # because even still need to wait, wait less
