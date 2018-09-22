@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 @app.route('/broadcaster/message-broadcast', methods=['POST'])
 def broadcaster_q1():
     data = request.get_json()
-    logging.info("data sent for evaluation {}".format(data))
+    # logging.info("data sent for evaluation {}".format(data))
     
     data = data.get("data")
     

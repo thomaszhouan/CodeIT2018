@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 @app.route('/broadcaster/most-connected-node', methods=['POST'])
 def most_connected_node():
     data = request.get_json()
-    logging.info("data sent for evaluation {}".format(data))
+    # logging.info("data sent for evaluation {}".format(data))
     data = data.get("data")
     graph = {}
     for x in data:
