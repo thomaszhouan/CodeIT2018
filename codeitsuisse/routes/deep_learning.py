@@ -23,9 +23,7 @@ class Model:
         self.input_X = tf.placeholder(tf.float32, [None, 784])
         self.input_y = tf.placeholder(tf.int32)
 
-        self.hidden1 = tf.layers.dense(inputs=self.input_X, units=512, activation=tf.nn.relu)
-        self.hidden2 = tf.layers.dense(inputs=self.hidden1, units=512, activation=tf.nn.relu)
-        self.logits = tf.layers.dense(inputs=self.hidden2, units=10, activation=None)
+        self.logits = tf.layers.dense(inputs=self.input_X, units=10, activation=None)
 
         self.prediction = tf.argmax(self.logits, axis=1, output_type=tf.int32)
         self.loss = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=self.input_y, logits=self.logits)
