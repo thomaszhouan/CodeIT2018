@@ -4,8 +4,6 @@ Created on Sat Sep 22 21:41:14 2018
 
 @author: zzhan
 """
-import queue
-
 import logging
 
 from flask import request, jsonify
@@ -23,27 +21,18 @@ def broadcaster_q1():
     
     vertices = set()
     in_v = set()
-    graph = {}
-    in_number = {}
     result = []
     for x in data:
         x, y = x.split("->")
         vertices.add(x)
         vertices.add(y)
         in_v.add(y)
-        if x in graph:
-            if not(y in graph[x]):
-                graph[x].append(y)
-        else:
-            graph[x] = [y]
-        if y in in_number:
-            in_number[y] += 1
-        else:
-            in_number[y] = 1
     sources = vertices.difference(in_v)
     result = list(sources)
-    logging.info("My result :{}".format(result))
-    return jsonify(result)
+    final_result = {}
+    final_result["result"] = result
+    logging.info("My result :{}".format(final_result))
+    return jsonify(final_result)
 
 
 
