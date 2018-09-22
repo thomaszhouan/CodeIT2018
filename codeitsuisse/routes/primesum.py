@@ -6,8 +6,8 @@ from codeitsuisse import app
 
 logger = logging.getLogger(__name__)
 
-@app.route('/primesum', methods=['POST'])
-def evaluate():
+@app.route('/prime-sum', methods=['POST'])
+def primesum():
     data = request.get_json()
     logging.info("data sent for evaluation {}".format(data))
     x = data.get("input")
