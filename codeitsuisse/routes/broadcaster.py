@@ -106,7 +106,7 @@ def solve_shortest_path(data):
             while u != -1:
                 path.append(nodes[u])
                 u = p[u]
-            return reversed(path)
+            return list(reversed(path))
         for i in g[u]:
             _, v, w = edge[i]
             if d[v]<0 or d[v]>w+d[u]:
