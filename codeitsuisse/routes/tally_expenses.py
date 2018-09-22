@@ -11,7 +11,7 @@ from flask import request, jsonify
 
 from codeitsuisse import app
 
-import numpy
+import numpy as np
 
 logger = logging.getLogger(__name__)
 
@@ -71,6 +71,6 @@ def evaluate():
             result.append(temp)
     final_result = {}
     final_result["transactions"] = result
-    logging.info("My result :{}".format(fianl_result))
+    logging.info("My result :{}".format(final_result))
     return jsonify(result)
 
