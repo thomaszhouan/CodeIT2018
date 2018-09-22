@@ -28,9 +28,7 @@ def most_connected_node():
                 graph[x].append(y)
         else:
             graph[x] = [y]
-    print(graph)
     q = queue.Queue()
-    
     
     node = None
     maxlen = 0
@@ -42,6 +40,8 @@ def most_connected_node():
             y = q.get()
             if y in graph:
                 for z in graph[y]:
+                    if not (z in q.queue):
+                        q.put(z)
                     if not (z in graph[x]):
                         graph[x].append(z)
         if len(graph[x]) > maxlen:
