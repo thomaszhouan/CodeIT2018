@@ -17,6 +17,7 @@ def primesum():
         result = []
     elif r == 1:
         result = [2, 2]
+        q -= 1
     else:
         result = [2]
     result += [3] * q
