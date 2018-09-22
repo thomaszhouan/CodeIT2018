@@ -23,4 +23,21 @@ def min_dist():
     return jsonify(result)
 
 
-
+@app.route('/customers-and-hotel/minimum-camps', methods=['POST'])
+def min_camp():
+    data = request.get_json()
+    intervals = []
+    for foo in data:
+        a = foo.get('pos')
+        b = foo.get('distance')
+        intervals.append((a-b, a+b))
+    intervals = sorted(intervals)
+    ans = 0
+    n = len(intervals)
+    cur = -1000000000000000
+    for i in range(n):
+        if intervals[i][0] <= cur:
+            continue
+        cur = intervals[i][1]
+        ans += 1
+    return jsonify({'answer': ans})
