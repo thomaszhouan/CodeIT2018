@@ -79,11 +79,11 @@ X_mean = np.load('./X_mean.npy')
 
 model = Model()
 saver = tf.train.Saver()
-with tf.Session() as sess:
-    saver.restore(sess, './model.ckpt')
-    logger.info('model restore ok')
-    # loss, acc = sess.run([model.loss, model.accuracy], feed_dict={model.input_X: X_test, model.input_y: y_test})
-    # logger.info('loss %f acc %f' % (loss, acc))
+sess = tf.Session()
+saver.restore(sess, './model.ckpt')
+logger.info('model restore ok')
+# loss, acc = sess.run([model.loss, model.accuracy], feed_dict={model.input_X: X_test, model.input_y: y_test})
+# logger.info('loss %f acc %f' % (loss, acc))
 
 
 @app.route('/machine-learning/question-1', methods=['POST'])
@@ -107,8 +107,6 @@ def mnist_lol():
     data = np.array(data).astype(np.float)
     data -= X_mean
     data /= 128
-    pred = None
-    with tf.Session() as sess:
-        pred = sess.run(model.prediction, feed_dict={model.input_X: data})
+    pred = sess.run(model.prediction, feed_dict={model.input_X: data})
     result = {'answer': pred.tolist()}
     return jsonify(result)
