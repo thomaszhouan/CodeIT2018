@@ -6,6 +6,7 @@ from flask import request, jsonify
 from codeitsuisse import app
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 def convert_exif_to_degress(value):
     d = float(value[0][0]) / float(value[0][1])
