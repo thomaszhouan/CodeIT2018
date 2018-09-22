@@ -1,5 +1,5 @@
 import logging
-import urllib
+import urllib.request
 from PIL import Image
 from io import BytesIO
 
@@ -38,9 +38,11 @@ def get_gps_from_img(filename):
 def photo_gps():
     data = request.get_json()
     logging.debug("data sent for evaluation {}".format(data))
+    result = []
     for item in data:
         url = item.get('path')
         byte = urllib.request.urlopen(url).read()
         f = BytesIO(byte)
-        return jsonify(get_gps_from_img(f))
+        result.append(jsonify(get_gps_from_img(f)))
+    return jsonify(result)
 
