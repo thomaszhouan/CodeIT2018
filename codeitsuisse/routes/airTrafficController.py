@@ -25,17 +25,17 @@ def airtraffic():
 
   return jsonify({"Flights":output})
 
-# def test(data):
-#   plane, single, distress, runway, ret = readin(data)
-#   output = []
-#   if single and len(distress) == 0:
-#     output = single_runway(plane, ret)
-#   elif len(distress) == 0:
-#     output = multiple_runways(plane, runway, ret)
-#   else:
-#     output = distressed(plane, distress, runway, ret)
+def test(data):
+  plane, single, distress, runway, ret = readin(data)
+  output = []
+  if single and len(distress) == 0:
+    output = single_runway(plane, ret)
+  elif len(distress) == 0:
+    output = multiple_runways(plane, runway, ret)
+  else:
+    output = distressed(plane, distress, runway, ret)
 
-#   print(output)
+  print(output)
 
 
 def readin(data):
@@ -110,45 +110,83 @@ def multiple_runways(plane, runway, ret):
     temp = {}
     temp["PlaneId"] = p["Id"]
     if rw[index]["Time"] + ret <= time:
-      # first check whether can land here
-      # if yes
       rw[index]["Time"] = time
-      temp["Time"] = min_to_time(time)
-      temp["Runway"] = rw[index]["name"]
-      output.append(temp.copy())
-      continue
+    else:
+      rw[index]["Time"] += ret   
+      time = rw[index]["Time"]
 
-    # if this one is occupied, next one should be better
-    # because even still need to wait, wait less
+    temp["Time"] = min_to_time(time)
+    temp["Runway"] = rw[index]["name"]
+    output.append(temp.copy())
     if index == len(rw) - 1:
       index = 0
     else:
       index += 1
-    if rw[index]["Time"] + ret <= time:
-      # not occupied
-      rw[index]["Time"] = time
-      temp["Time"] = min_to_time(time)
-      temp["Runway"] = rw[index]["name"]
-      output.append(temp.copy())
-      continue
-    else:
-      rw[index]["Time"] += ret
-      time = rw[index]["Time"]
-      temp["Runway"] = rw[index]["name"]
-      temp["Time"] = min_to_time(time)
-      output.append(temp.copy())
+    continue
 
-  return output
+    # if this one is occupied, next one should be better
+    # because even still need to wait, wait less
+    # if index == len(rw) - 1:
+    #   index = 0
+    # else:
+    #   index += 1
+    # if rw[index]["Time"] + ret <= time:
+    #   # not occupied
+    #   rw[index]["Time"] = time
+    #   temp["Time"] = min_to_time(time)
+    #   temp["Runway"] = rw[index]["name"]
+    #   output.append(temp.copy())
+    #   continue
+    # else:
+    #   rw[index]["Time"] += ret
+    #   time = rw[index]["Time"]
+    #   temp["Runway"] = rw[index]["name"]
+    #   temp["Time"] = min_to_time(time)
+    #   output.append(temp.copy())
+
+  return sorted(output, key=lambda k: (k["Time"], k["PlaneId"]))
+
 
 
 def distressed(plane, distress, runway, ret):
   output = []
+  for p in plane:
+    if p["Dis"] == "true":
+      p["Time"] -= ret
+  new = sorted(plane, key=lambda k: (k["Time"], k["Id"]))
+  rw = []
+  for r in runway:
+    temp = {}
+    temp['name'] = r
+    temp["Time"] = -10
+    rw.append(temp.copy())
 
+  index = 0
+  for p in new:
+    time = p["Time"]
+    temp = {}
+    temp["PlaneId"] = p["Id"]
+    if p["Dis"] == "true":
+      time += ret
+      rw[index]["Time"] = time
+    elif rw[index]["Time"] + ret <= time:
+      rw[index]["Time"] = time
+    else:
+      rw[index]["Time"] += ret 
+      time = rw[index]["Time"]
+    
+    temp["Time"] = min_to_time(time)
+    temp["Runway"] = rw[index]["name"]
+    output.append(temp.copy())
+    if index == len(rw) - 1:
+      index = 0
+    else:
+      index += 1
+    continue
 
-
-  return output 
-
-
+    
+  return sorted(output, key=lambda k: (k["Time"], k["PlaneId"]))
+ 
 
 
 def min_to_time(time):
