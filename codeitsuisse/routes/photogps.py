@@ -6,7 +6,6 @@ from flask import request, jsonify
 from codeitsuisse import app
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
 
 def convert_exif_to_degress(value):
     d = float(value[0][0]) / float(value[0][1])
@@ -17,9 +16,9 @@ def convert_exif_to_degress(value):
 
 def get_gps_from_img(filename):
     img = Image.open(filename)
-    logging.info(img)
+    logging.debug(img)
     meta = img._getexif()[34853]
-    logging.info(meta)
+    logging.debug(meta)
     latitude_ref = meta[1]
     latitute = meta[2]
     longitude_ref = meta[3]
@@ -36,8 +35,8 @@ def get_gps_from_img(filename):
 @app.route('/imagesGPS', methods=['POST'])
 def photo_gps():
     data = request.get_json()
-    logging.info("data sent for evaluation {}".format(data))
-    logging.info(data[0])
-    logging.info(data[0].get('path'))
+    logging.debug("data sent for evaluation {}".format(data))
+    logging.debug(data[0])
+    logging.debug(data[0].get('path'))
     return jsonify({})
 
