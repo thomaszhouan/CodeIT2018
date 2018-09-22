@@ -25,8 +25,8 @@ def skill_tree():
     global min_stack
     min_stack = []
     global min
-    min = -1
-    skills = {"root":0}
+    min = 1e19
+    skills = {"fasd$$$$$$$$$$$$$$$$$$$$$$$":0}
     inverse = {}
     graph = {0:{"n":[],"o":0,"p":0}}
     index = 1
@@ -71,7 +71,7 @@ def DFS(graph, node, sum, pnt):
         for n in graph[node]["n"]:
             if sum + graph[n]["o"] < boss:
                 DFS(graph, n, sum + graph[n]["o"], pnt + graph[n]["p"])
-            elif min < 0 or pnt + graph[n]["p"] < min:
+            elif pnt + graph[n]["p"] < min:
                 stack.append(n)
                 min_stack = stack.copy()
                 min = pnt + graph[n]["p"]
