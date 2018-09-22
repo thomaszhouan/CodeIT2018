@@ -1,5 +1,7 @@
 import logging
+import urllib
 from PIL import Image
+from io import BytesIO
 
 from flask import request, jsonify
 
@@ -36,7 +38,9 @@ def get_gps_from_img(filename):
 def photo_gps():
     data = request.get_json()
     logging.debug("data sent for evaluation {}".format(data))
-    logging.debug(data[0])
-    logging.debug(data[0].get('path'))
-    return jsonify({'path': data[0].get('path')})
+    for item in data:
+        url = item.get('path')
+        byte = urllib.request.urlopen(url).read()
+        f = BytesIO(byte)
+        return jsonify(get_gps_from_img(f))
 
