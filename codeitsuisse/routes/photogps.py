@@ -43,6 +43,6 @@ def photo_gps():
         url = item.get('path')
         byte = urllib.request.urlopen(url).read()
         f = BytesIO(byte)
-        result.append(jsonify(get_gps_from_img(f)))
+        result.append(get_gps_from_img(f))
     return jsonify(result)
 
