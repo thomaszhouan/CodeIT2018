@@ -36,3 +36,13 @@ six==1.11.0
 typed-ast==1.1.0
 Werkzeug==0.14.1
 wrapt==1.10.11
+absl-py==0.5.0
+astor==0.7.1
+gast==0.2.0
+grpcio==1.15.0
+markdown==3.0
+protobuf==3.6.1
+setuptools==39.1.0
+tensorboard==1.10.0
+tensorflow==1.10.1
+termcolor==1.1.0
