@@ -74,5 +74,5 @@ def tally_expense():
     final_result = {}
     final_result["transactions"] = result
     logging.info("My result :{}".format(final_result))
-    return jsonify(result)
+    return jsonify(final_result)
 
