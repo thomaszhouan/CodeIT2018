@@ -57,7 +57,7 @@ def tally_expense():
             if transaction[i] > 0:               
                 minindex = np.argmin(transaction)
                 minm = transaction[minindex]
-                if tran + minm > 0:
+                if (tran + minm) > 0:
                     transaction[i] = tran + minm
                     transaction[minindex] = 0
                     temp = {}
@@ -76,7 +76,7 @@ def tally_expense():
             else:
                 maxindex = np.argmax(transaction)
                 maxm = transaction[maxindex]
-                if tran + maxm > 0:
+                if (tran + maxm) > 0:
                     transaction[i] = 0
                     transaction[maxindex] = tran + maxm
                     temp = {}
