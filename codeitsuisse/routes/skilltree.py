@@ -10,7 +10,7 @@ boss = 0
 visited = set()
 stack = [] # using list as stack to keep the minimum path
 min_stack = []
-min = 1e9
+min = -1
 
 @app.route('/skill-tree', methods=['POST'])
 def skill_tree():
@@ -25,7 +25,7 @@ def skill_tree():
     global min_stack
     min_stack = []
     global min
-    min = 1e9
+    min = -1
     skills = {"root":0}
     inverse = {}
     graph = {0:{"n":[],"o":0,"p":0}}
@@ -71,7 +71,7 @@ def DFS(graph, node, sum, pnt):
         for n in graph[node]["n"]:
             if sum + graph[n]["o"] < boss:
                 DFS(graph, n, sum + graph[n]["o"], pnt + graph[n]["p"])
-            elif pnt + graph[n]["p"] < min:
+            elif min < 0 or pnt + graph[n]["p"] < min:
                 stack.append(n)
                 min_stack = stack.copy()
                 min = pnt + graph[n]["p"]
