@@ -38,4 +38,5 @@ def photo_gps():
     logging.info("data sent for evaluation {}".format(data))
     logging.info(data[0])
     logging.info(data[0].get('path'))
+    return jsonify({})
 
