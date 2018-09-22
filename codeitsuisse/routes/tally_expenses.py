@@ -16,7 +16,7 @@ import numpy as np
 logger = logging.getLogger(__name__)
 
 @app.route('/tally-expense', methods=['POST'])
-def evaluate():
+def tally_expense():
     data = request.get_json()
     logging.info("data sent for evaluation {}".format(data))
     
