@@ -75,6 +75,7 @@ def batch_generator(X, y, shuffle=True, batch_size=64):
 #         logger.info('Epoch %d test loss %f accuracy %f' % (epoch+1, loss, acc))
 
 #     saver.save(sess, './model.ckpt')
+
 X_mean = np.load('./X_mean.npy')
 
 model = Model()
