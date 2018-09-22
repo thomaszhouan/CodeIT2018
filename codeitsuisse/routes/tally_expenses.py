@@ -43,7 +43,7 @@ def evaluate():
             if j == payer:
                 money[j] += (num_person - 1) * amount / num_person
             else:
-                money[j] -= amount * / num_person
+                money[j] -= amount / num_person
     result = []
     transaction = []
     for i in num_person:
