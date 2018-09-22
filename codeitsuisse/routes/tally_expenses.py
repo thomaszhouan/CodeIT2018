@@ -24,13 +24,14 @@ def tally_expense():
     num_person = len(persons)
     money = {}
     for i in range(num_person):
-        money[i] = 0
+        money[persons[i]] = 0
     expenses = data.get("expenses")
-    for i in range(expenses):
+    for i in range(len(expenses)):
         temp = expenses[i]
         amount = temp["amount"]
         payer = temp["paidBy"]
-        if temp.has_key("exclude"):
+        print(payer)
+        if "exclude" in temp:
             exclude = temp["exclude"]
             num_pay = num_person - len(exclude)
             for j in persons:
@@ -40,13 +41,14 @@ def tally_expense():
                     else:
                         money[j] -= amount / num_pay
         else:
-            if j == payer:
-                money[j] += (num_person - 1) * amount / num_person
-            else:
-                money[j] -= amount / num_person
+            for j in persons:
+                if j == payer:
+                    money[j] += (num_person - 1) * amount / num_person
+                else:
+                    money[j] -= amount / num_person
     result = []
-    transaction = []
-    for i in num_person:
+    transaction = np.zeros(num_person)
+    for i in range(num_person):
         transaction[i] = money[persons[i]]
     while max(transaction) > 0:
         maxindex = np.argmax(transaction)
