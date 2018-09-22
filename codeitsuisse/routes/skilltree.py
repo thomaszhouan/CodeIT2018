@@ -7,7 +7,7 @@ from codeitsuisse import app
 logger = logging.getLogger(__name__)
 
 boss = 0
-visited = []
+visited = set()
 stack = [] # using list as stack to keep the minimum path
 min_stack = []
 min = 1e9
@@ -15,13 +15,17 @@ min = 1e9
 @app.route('/skill-tree', methods=['POST'])
 def skill_tree():
     data = request.get_json()
-    logging.info("data sent for evaluation {}".format(data))
+    # logging.info("data sent for evaluation {}".format(data))
     global visited
+    visited = set()
     global stack
+    stack = []
     global boss
-    global min_stack
-    global min
     boss = data["boss"]["offense"]
+    global min_stack
+    min_stack = []
+    global min
+    min = 1e9
     skills = {"root":0}
     inverse = {}
     graph = {0:{"n":[],"o":0,"p":0}}
@@ -61,7 +65,7 @@ def DFS(graph, node, sum, pnt):
     global min_stack
     global min
     if node not in visited:
-        visited.append(node)
+        visited.add(node)
         stack.append(node)
         # print("######", stack, "############")
         for n in graph[node]["n"]:
