@@ -19,7 +19,7 @@ def min_dist():
             ans = dis
     if n == 1:
         ans = 0
-    result = {'answer': ans}
+    result = {'answer': "%d" % ans}
     return jsonify(result)
 
 
