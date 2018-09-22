@@ -34,7 +34,7 @@ def evaluate():
             exclude = temp["exclude"]
             num_pay = num_person - len(exclude)
             for j in persons:
-                if !(j in exclude):
+                if not(j in exclude):
                     if j == payer:
                         money[j] += (num_pay - 1) * amount / num_pay
                     else:
