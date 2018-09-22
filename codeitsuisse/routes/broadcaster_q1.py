@@ -29,8 +29,10 @@ def broadcaster_q1():
         in_v.add(y)
     sources = vertices.difference(in_v)
     result = list(sources)
-    logging.info("My result :{}".format(result))
-    return jsonify(result)
+    final_result = {}
+    final_result["result"] = result
+    logging.info("My result :{}".format(final_result))
+    return jsonify(final_result)
 
 
 
