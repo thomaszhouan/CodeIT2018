@@ -46,31 +46,45 @@ def batch_generator(X, y, shuffle=True, batch_size=64):
         yield X[start:end], y[start:end], batch
 
 
-logger.info('Constructing model')
-model = Model()
-(X_train, y_train), (X_test, y_test) = mnist.load_data()
-X_train = X_train.reshape([-1, 784]).astype(np.float32)
-X_test = X_test.reshape([-1, 784]).astype(np.float32)
-X_mean = np.mean(X_train, axis=0)
-X_train -= X_mean
-X_test -= X_mean
-X_train /= 128
-X_test /= 128
-optimizer = tf.train.MomentumOptimizer(learning_rate=1e-2, momentum=0.95)
-train_op = optimizer.apply_gradients(optimizer.compute_gradients(model.loss))
-init_op = tf.global_variables_initializer()
-logger.info('Start training..')
-with tf.Session() as sess:
-    sess.run(init_op)
+# logger.info('Constructing model')
+# model = Model()
+# (X_train, y_train), (X_test, y_test) = mnist.load_data()
+# X_train = X_train.reshape([-1, 784]).astype(np.float32)
+# X_test = X_test.reshape([-1, 784]).astype(np.float32)
+# X_mean = np.mean(X_train, axis=0)
+# X_train -= X_mean
+# X_test -= X_mean
+# X_train /= 128
+# X_test /= 128
+# np.save('./X_mean.npy', X_mean)
+# optimizer = tf.train.MomentumOptimizer(learning_rate=1e-2, momentum=0.95)
+# train_op = optimizer.apply_gradients(optimizer.compute_gradients(model.loss))
+# init_op = tf.global_variables_initializer()
+# saver = tf.train.Saver()
+# logger.info('Start training..')
+# with tf.Session() as sess:
+#     sess.run(init_op)
 
-    for epoch in range(2):
-        logger.info('Epoch %d' % (epoch+1))
-        for X, y, b in batch_generator(X_train, y_train):
-            _, loss, acc = sess.run([train_op, model.loss, model.accuracy], feed_dict={model.input_X: X, model.input_y: y})
-            if (b+1) % 100 == 0:
-                logger.info('Batch %d loss %f' % (b+1, loss))
-        loss, acc = sess.run([model.loss, model.accuracy], feed_dict={model.input_X: X_test, model.input_y: y_test})
-        logger.info('Epoch %d test loss %f accuracy %f' % (epoch+1, loss, acc))
+#     for epoch in range(2):
+#         logger.info('Epoch %d' % (epoch+1))
+#         for X, y, b in batch_generator(X_train, y_train):
+#             _, loss, acc = sess.run([train_op, model.loss, model.accuracy], feed_dict={model.input_X: X, model.input_y: y})
+#             if (b+1) % 100 == 0:
+#                 logger.info('Batch %d loss %f' % (b+1, loss))
+#         loss, acc = sess.run([model.loss, model.accuracy], feed_dict={model.input_X: X_test, model.input_y: y_test})
+#         logger.info('Epoch %d test loss %f accuracy %f' % (epoch+1, loss, acc))
+
+#     saver.save(sess, './model.ckpt')
+
+X_mean = np.load('./X_mean.npy')
+
+model = Model()
+saver = tf.train.Saver()
+sess = tf.Session()
+saver.restore(sess, './model.ckpt')
+logger.info('model restore ok')
+# loss, acc = sess.run([model.loss, model.accuracy], feed_dict={model.input_X: X_test, model.input_y: y_test})
+# logger.info('loss %f acc %f' % (loss, acc))
 
 
 @app.route('/machine-learning/question-1', methods=['POST'])
@@ -94,8 +108,6 @@ def mnist_lol():
     data = np.array(data).astype(np.float)
     data -= X_mean
     data /= 128
-    pred = None
-    with tf.Session() as sess:
-        pred = sess.run(model.prediction, feed_dict={model.input_X: data})
+    pred = sess.run(model.prediction, feed_dict={model.input_X: data})
     result = {'answer': pred.tolist()}
     return jsonify(result)
