@@ -104,14 +104,17 @@ def solve_scc(data):
         return dp[u]
 
     mx = 0
-    mxid = -1
+    mxid = []
     for i in range(m):
         if dp[i] > mx:
             mx = dp[i]
-            mxid = i
+            mxid = [i]
+        elif dp[i] == mx:
+            mxid.append(i)
 
+    mxid = set(mxid)
     for node in nodes:
-        if node2id[node] == mxid:
+        if node2id[node] in mxid:
             return {'result': node}
 
     assert False
