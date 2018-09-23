@@ -112,6 +112,7 @@ def solve_scc(data):
         elif dp[i] == mx:
             mxid.append(i)
 
+    logging.info('mxid: {}' % mxid)
     mxid = set(mxid)
     for node in nodes:
         if node2id[node] in mxid:

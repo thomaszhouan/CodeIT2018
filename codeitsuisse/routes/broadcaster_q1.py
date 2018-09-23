@@ -31,7 +31,7 @@ def broadcaster_q1():
     result = list(sources)
     final_result = {}
     final_result["result"] = result
-    logging.info("My result :{}".format(final_result))
+    # logging.info("My result :{}".format(final_result))
     return jsonify(final_result)
 
 
