@@ -103,7 +103,7 @@ def multiple_runways(plane, runway, ret):
     temp['name'] = r
     temp["Time"] = -10
     rws.append(temp.copy())
-
+  
   # index = 0
   # for p in new:
   #   time = p["Time"]
@@ -124,20 +124,45 @@ def multiple_runways(plane, runway, ret):
   #     index += 1
   #   continue
   
+  ### zzy 
+  rws = sorted(rws, key = lambda k:(k['name']))
   for p in new:
-    time = p["Time"]
-    temp = {}
-    temp["PlaneId"] = p["Id"]
-    rw = min(rws, key = lambda k:k['Time'])
-    if rw["Time"] + ret <= time:
-      rw["Time"] = time
-    else:
-      rw["Time"] += ret   
-      time = rw["Time"]
-
-    temp["Time"] = min_to_time(time)
-    temp["Runway"] = rw["name"]
-    output.append(temp.copy())
+      time = p["Time"]
+      temp = {}
+      temp["PlaneId"] = p["Id"]
+      rw = min(rws, key = lambda k:k['Time'])
+      if rw['Time'] + ret <= time:
+          for x in rws:
+              if x["Time"] + ret <= time:
+                  temp["Runway"] = x['name']
+                  x["Time"] = time
+                  break
+      else:
+        rw["Time"] += ret   
+        time = rw["Time"]
+        temp["Runway"] = rw["name"]
+        
+      temp["Time"] = min_to_time(time)
+      output.append(temp.copy())
+  
+  ### zzy
+  
+  
+  
+#  for p in new:
+#    time = p["Time"]
+#    temp = {}
+#    temp["PlaneId"] = p["Id"]
+#    rw = min(rws, key = lambda k:k['Time'])
+#    if rw["Time"] + ret <= time:
+#      rw["Time"] = time
+#    else:
+#      rw["Time"] += ret   
+#      time = rw["Time"]
+#
+#    temp["Time"] = min_to_time(time)
+#    temp["Runway"] = rw["name"]
+  
 
     # if this one is occupied, next one should be better
     # because even still need to wait, wait less
@@ -169,35 +194,61 @@ def distressed(plane, distress, runway, ret):
     if p["Dis"] == "true":
       p["Time"] -= ret
   new = sorted(plane, key=lambda k: (k["Time"], k["Id"]))
-  rw = []
+  rws = []
+  
+  ### zzy
+  
   for r in runway:
     temp = {}
     temp['name'] = r
     temp["Time"] = -10
-    rw.append(temp.copy())
-
-  index = 0
+    rws.append(temp.copy())
+  rws = sorted(rws, key = lambda k:(k['name']))
   for p in new:
-    time = p["Time"]
-    temp = {}
-    temp["PlaneId"] = p["Id"]
-    if p["Dis"] == "true":
-      time += ret
-      rw[index]["Time"] = time
-    elif rw[index]["Time"] + ret <= time:
-      rw[index]["Time"] = time
-    else:
-      rw[index]["Time"] += ret 
-      time = rw[index]["Time"]
-    
-    temp["Time"] = min_to_time(time)
-    temp["Runway"] = rw[index]["name"]
-    output.append(temp.copy())
-    if index == len(rw) - 1:
-      index = 0
-    else:
-      index += 1
-    continue
+      time = p["Time"]
+      temp = {}
+      temp["PlaneId"] = p["Id"]
+      if p["Dis"] == "true" :
+          time += ret
+      rw = min(rws, key = lambda k:k['Time'])
+      if rw['Time'] + ret <= time:
+          for x in rws:
+              if x["Time"] + ret <= time:
+                  temp["Runway"] = x['name']
+                  x["Time"] = time
+                  break
+      else:
+        rw["Time"] += ret   
+        time = rw["Time"]
+        temp["Runway"] = rw["name"]
+        
+      temp["Time"] = min_to_time(time)
+      output.append(temp.copy())
+  
+  ### zzy
+  
+#  index = 0
+#  for p in new:
+#    time = p["Time"]
+#    temp = {}
+#    temp["PlaneId"] = p["Id"]
+#    if p["Dis"] == "true":
+#      time += ret
+#      rw[index]["Time"] = time
+#    elif rw[index]["Time"] + ret <= time:
+#      rw[index]["Time"] = time
+#    else:
+#      rw[index]["Time"] += ret 
+#      time = rw[index]["Time"]
+#    
+#    temp["Time"] = min_to_time(time)
+#    temp["Runway"] = rw[index]["name"]
+#    output.append(temp.copy())
+#    if index == len(rw) - 1:
+#      index = 0
+#    else:
+#      index += 1
+#    continue
 
     
   return sorted(output, key=lambda k: (k["Time"], k["PlaneId"]))
