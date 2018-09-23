@@ -52,20 +52,24 @@ def dinosaur():
     sum = 0
     ub = min(l2 - 1, Q)
     lb = 0
-    for j in np.arange(lb, ub + 1):
+    for j in range(lb, ub + 1):
         sum = (sum + p2[j]) % mod
     answer = sum * p1[0] % mod
     # print(sum)
-    for index in np.arange(1,l1):
+    for index in range(1,l1):
         if index - Q > 0:
             # update left
             sum = sum - p2[index - Q - 1] % mod
+            if sum<0:
+                sum += mod
         if index + Q < l1:
             # update right
             sum = sum + p2[index + Q] % mod
         # print(sum)
         temp = p1[index] * sum % mod
-        answer = (temp + answer) % mod
+        answer += temp
+        if answer >= mod:
+            answer -= mod
     answer = int(answer)
     # print(answer)
     return jsonify({"result":answer}) 
