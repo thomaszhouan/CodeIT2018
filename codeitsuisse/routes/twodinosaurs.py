@@ -86,17 +86,11 @@ def dinosaur():
     for index in range(1,l1):
         if index - Q > 0:
             # update left
-            sum = sum - p2[index - Q - 1] % mod
-            if sum<0:
-                sum += mod
+            sum = (mod + sum - p2[index - Q - 1]) % mod
         if index + Q < l1:
             # update right
-            sum = sum + p2[index + Q] % mod
+            sum = (sum + p2[index + Q]) % mod
         # print(sum)
         temp = p1[index] * sum % mod
-        answer += temp
-        if answer >= mod:
-            answer -= mod
-    answer = int(answer)
-    # print(answer)
+        answer = (temp+answer)%mod
     return jsonify({"result":answer}) 
