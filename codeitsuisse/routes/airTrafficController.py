@@ -208,7 +208,7 @@ def distressed(plane, distress, runway, ret):
       time = p["Time"]
       temp = {}
       temp["PlaneId"] = p["Id"]
-      rw = min(rws, key = lambda k:k['Time'])
+      rw = min(rws, key = lambda k:k['name'])
       if p["Dis"] == "true" :
         time += ret
         for x in rws:
