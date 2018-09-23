@@ -208,10 +208,17 @@ def distressed(plane, distress, runway, ret):
       time = p["Time"]
       temp = {}
       temp["PlaneId"] = p["Id"]
-      if p["Dis"] == "true" :
-          time += ret
       rw = min(rws, key = lambda k:k['Time'])
-      if rw['Time'] + ret <= time:
+      if p["Dis"] == "true" :
+        time += ret
+        rw = min(rws, key = lambda k:k['name'])
+        temp["Runway"] = rw['name']
+        rw["time"] = time
+        temp["Time"] = min_to_time(time)
+        output.append(temp.copy())
+        continue
+
+      elif rw['Time'] + ret <= time:
           for x in rws:
               if x["Time"] + ret <= time:
                   temp["Runway"] = x['name']
