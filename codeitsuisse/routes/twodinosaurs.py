@@ -103,4 +103,4 @@ def dinosaur():
         # print(sum)
         temp = p1[index] * sum % mod
         answer = (temp+answer)%mod
-    return jsonify({"result":answer}) 
+    return jsonify({"result":int(answer)}) 
