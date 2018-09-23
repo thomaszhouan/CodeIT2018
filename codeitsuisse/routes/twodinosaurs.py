@@ -19,9 +19,7 @@ def solve_dp(A):
             j = i - a
             if j < 0:
                 break
-            dp[i] += dp[j]
-            if dp[i]>=mod:
-                dp[i] -= mod
+            dp[i] = (dp[i]+dp[j]) % mod
     return dp
 
 
@@ -41,8 +39,8 @@ def dinosaur():
     Q = data["maximum_difference_for_calories"]
     mod = 100000123
 
-    if N > 150:
-        return jsonify({"EMPTY": "EMPTY"})
+    # if N > 150:
+    #     return jsonify({"EMPTY": "EMPTY"})
 
     p1, p2 = solve_dino(N, listA, listB, Q)
     l2 = len(p2)
