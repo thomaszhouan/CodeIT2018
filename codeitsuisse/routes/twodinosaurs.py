@@ -6,6 +6,29 @@ from codeitsuisse import app
 
 logger = logging.getLogger(__name__)
 
+
+def solve_dp(A):
+    mod = 100000123
+    maxn = 400010
+    dp = [0] * maxn
+    dp[0] = 1
+    for a in A:
+        for i in range((maxn-1),-1,-1):
+            j = i - a
+            if j < 0:
+                break
+            dp[i] += dp[j]
+            if dp[i]>=mod:
+                dp[i] -= mod
+    return dp
+
+
+def solve_dino(n, A, B, q):
+    a = solve_dp(A)
+    b = solve_dp(B)
+    return a, b
+
+
 @app.route('/two-dinosaurs', methods=['POST'])
 def dinosaur():
     data = request.get_json()
@@ -16,34 +39,38 @@ def dinosaur():
     Q = data["maximum_difference_for_calories"]
     mod = 100000123
 
-    p1 = np.poly1d([1])
-    for a in listA:
-        pt = np.zeros(a+1)
-        pt[0] = 1
-        pt[a] = 1
-        p1 = np.fmod(np.polymul(p1, pt), mod) # this is an np array, not np.poly1d
-    # print(p1)
-    p2 = np.poly1d([1])
-    for b in listB:
-        ps = np.zeros(b+1)
-        ps[0] = 1
-        ps[b] = 1
-        p2 = np.fmod(np.polymul(p2, ps), mod)
-    # print(p2)
-    # sliding windo
-    l1 = p1.size
-    l2 = p2.size
-    if l1 < l2:
-        p3 = np.zeros(l2)
-        p3[-l1:] = p1
-        p1 = p2
-        p2 = p3
-        l1 = p1.size
-    elif l1 > l2:
-        p3 = np.zeros(l1)
-        p3[-l2:] = p2
-        p2 = p3
-        l2 = p2.size
+    p1, p2 = solve_dino(N, listA, listB, Q)
+    l2 = len(p2)
+    l1 = len(p1)
+    # if False: # old
+    #     p1 = np.poly1d([1])
+    #     for a in listA:
+    #         pt = np.zeros(a+1)
+    #         pt[0] = 1
+    #         pt[a] = 1
+    #         p1 = np.fmod(np.polymul(p1, pt), mod) # this is an np array, not np.poly1d
+    #     # print(p1)
+    #     p2 = np.poly1d([1])
+    #     for b in listB:
+    #         ps = np.zeros(b+1)
+    #         ps[0] = 1
+    #         ps[b] = 1
+    #         p2 = np.fmod(np.polymul(p2, ps), mod)
+    #     # print(p2)
+    #     # sliding windo
+    #     l1 = p1.size
+    #     l2 = p2.size
+    #     if l1 < l2:
+    #         p3 = np.zeros(l2)
+    #         p3[-l1:] = p1
+    #         p1 = p2
+    #         p2 = p3
+    #         l1 = p1.size
+    #     elif l1 > l2:
+    #         p3 = np.zeros(l1)
+    #         p3[-l2:] = p2
+    #         p2 = p3
+    #         l2 = p2.size
 
     # print(p1)
     # print(p2)
