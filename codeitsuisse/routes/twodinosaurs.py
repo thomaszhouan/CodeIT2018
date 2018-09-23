@@ -10,16 +10,23 @@ logger = logging.getLogger(__name__)
 def solve_dp(A):
     mod = 100000123
     maxn = 400010
-    dp = [0] * maxn
+    dp = np.zeros(maxn, dtype=np.int32)
     dp[0] = 1
     cur = 0
     for a in A:
         cur += a
-        for i in range(cur,-1,-1):
-            j = i - a
-            if j < 0:
-                break
-            dp[i] = (dp[i]+dp[j]) % mod
+        dp_new = np.copy(dp)
+        dp_new[a:cur+1] += dp[:cur-a+1]
+        dp_new %= mod
+        tmp = dp_new
+        dp_new = dp
+        dp = tmp
+        # print(dp[:20])
+        # for i in range(cur,-1,-1):
+        #     j = i - a
+        #     if j < 0:
+        #         break
+        #     dp[i] = (dp[i]+dp[j]) % mod
     return dp
 
 
@@ -96,4 +103,4 @@ def dinosaur():
         # print(sum)
         temp = p1[index] * sum % mod
         answer = (temp+answer)%mod
-    return jsonify({"result":answer}) 
+    return jsonify({"result":int(answer)}) 
