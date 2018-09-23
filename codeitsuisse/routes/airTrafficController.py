@@ -216,8 +216,8 @@ def distressed(plane, distress, runway, ret):
         rw["time"] = time
         temp["Time"] = min_to_time(time)
         output.append(temp.copy())
-        break
-        
+        continue
+
       elif rw['Time'] + ret <= time:
           for x in rws:
               if x["Time"] + ret <= time:
