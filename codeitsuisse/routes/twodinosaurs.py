@@ -7,8 +7,8 @@ from codeitsuisse import app
 logger = logging.getLogger(__name__)
 
 @app.route('/two-dinosaurs', methods=['POST'])
-def dinosaur(data):
-    #data = request.get_json()
+def dinosaur():
+    data = request.get_json()
     # logging.info("data sent for evaluation {}".format(data))
     N = data["number_of_types_of_food"]
     listA = data["calories_for_each_type_for_raphael"]
