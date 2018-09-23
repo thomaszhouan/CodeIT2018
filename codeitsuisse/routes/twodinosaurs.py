@@ -22,14 +22,14 @@ def dinosaur(data):
         pt[0] = 1
         pt[a] = 1
         p1 = np.fmod(np.polymul(p1, pt), mod) # this is an np array, not np.poly1d
-
-    p2 = np.poly1d([2])
+    # print(p1)
+    p2 = np.poly1d([1])
     for b in listB:
         ps = np.zeros(b+1)
         ps[0] = 1
         ps[b] = 1
         p2 = np.fmod(np.polymul(p2, ps), mod)
-
+    # print(p2)
     # sliding windo
     l1 = p1.size
     l2 = p2.size
@@ -43,24 +43,29 @@ def dinosaur(data):
         p3 = np.zeros(l1)
         p3[-l2:] = p2
         p2 = p3
-        l2 = p3.size
+        l2 = p2.size
+
+    # print(p1)
+    # print(p2)
     # preprocessing, so that first term of l1 is not zero
     answer = 0
     sum = 0
-    ub = min(l2 - 1, Q - 1)
+    ub = min(l2 - 1, Q)
     lb = 0
     for j in np.arange(lb, ub + 1):
-        sum = (sum + l2[j]) % mod
-    answer = sum * l1[0] % mod
-
-    for l, index in l1, np.arange(l1):
+        sum = (sum + p2[j]) % mod
+    answer = sum * p1[0] % mod
+    # print(sum)
+    for index in np.arange(1,l1):
         if index - Q > 0:
             # update left
-            sum = sum - l2[index - Q - 1] % mod
-        if index + Q < len:
+            sum = sum - p2[index - Q - 1] % mod
+        if index + Q < l1:
             # update right
-            sum = sum + l2[index + Q] % mod
-        temp = l * sum % mod
+            sum = sum + p2[index + Q] % mod
+        # print(sum)
+        temp = p1[index] * sum % mod
         answer = (temp + answer) % mod
-    print(answer)
+    answer = int(answer)
+    # print(answer)
     return jsonify({"result":answer}) 
