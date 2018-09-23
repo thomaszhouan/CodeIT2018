@@ -12,8 +12,10 @@ def solve_dp(A):
     maxn = 400010
     dp = [0] * maxn
     dp[0] = 1
+    cur = 0
     for a in A:
-        for i in range((maxn-1),-1,-1):
+        cur += a
+        for i in range(cur,-1,-1):
             j = i - a
             if j < 0:
                 break
