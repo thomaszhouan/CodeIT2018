@@ -61,6 +61,7 @@ def solve_scc(data):
     def dfs2(v):
         if sccno[v] >= 0:
             return
+        # print('dfs2 ', v)
         sccno[v] = scc_cnt['a']-1
         # print('assign %d to %d' % (v, sccno[v]))
         for u in gt[v]:
@@ -78,9 +79,12 @@ def solve_scc(data):
 
     def build_scc():
         find_scc()
+        # print(s)
+        # print(sccno)
         for _ in range(scc_cnt['a']):
             g_scc.append(set())
         for u, v in edge:
+            # print('edge %d %d' % (u, v))
             u = sccno[u]
             v = sccno[v]
             if u==v:
@@ -103,6 +107,10 @@ def solve_scc(data):
             dp[u] += foo(v)
         return dp[u]
 
+    # print(g_scc)
+    for i in range(m):
+        foo(i)
+    # print(dp)
     mx = 0
     mxid = []
     for i in range(m):
@@ -112,10 +120,11 @@ def solve_scc(data):
         elif dp[i] == mx:
             mxid.append(i)
 
-    logging.info('mxid: {}' % mxid)
+    # print(mxid)
+    logging.info('mxid: %s' % str(mxid))
     mxid = set(mxid)
     for node in nodes:
-        if node2id[node] in mxid:
+        if sccno[node2id[node]] in mxid:
             return {'result': node}
 
     assert False
@@ -137,8 +146,7 @@ def most_connected_node():
 #         x, y = x.split("->")
 #         if x in graph:
 #             if not(y in graph[x]):
-#                 graph[x].append(y)
-#         else:
+#                 graph[x].append(y) #         else:
 #             graph[x] = [y]
 #     q = queue.Queue()
     
