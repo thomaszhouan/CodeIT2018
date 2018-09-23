@@ -41,7 +41,7 @@ def dinosaur():
     Q = data["maximum_difference_for_calories"]
     mod = 100000123
 
-    if N > 100:
+    if N > 150:
         return jsonify({"EMPTY": "EMPTY"})
 
     p1, p2 = solve_dino(N, listA, listB, Q)
